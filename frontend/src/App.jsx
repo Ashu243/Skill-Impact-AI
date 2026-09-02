@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./components/Layout/DashboardLayout.jsx";
 import Candidates from "./pages/Candidates";
+import CandidateDetails from "./pages/CandidateDetails";
 
 function Placeholder({ title }) {
   return (
@@ -42,6 +43,15 @@ export default function App() {
           element={
             <DashboardLayout>
               <Candidates />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/candidates/:id"
+          element={
+            <DashboardLayout>
+              <CandidateDetails />
             </DashboardLayout>
           }
         />
