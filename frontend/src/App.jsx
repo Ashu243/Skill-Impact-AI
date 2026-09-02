@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./components/Layout/DashboardLayout.jsx";
 import Candidates from "./pages/Candidates";
 import CandidateDetails from "./pages/CandidateDetails";
+import TrainingCentres from "./pages/TrainingCentres";
+import TrainingCentreDetails from "./pages/TrainingCentreDetails";
 
 function Placeholder({ title }) {
   return (
@@ -60,7 +62,16 @@ export default function App() {
           path="/training-centres"
           element={
             <DashboardLayout>
-              <Placeholder title="Training Centres" />
+              <TrainingCentres />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/training-centres/:id"
+          element={
+            <DashboardLayout>
+              <TrainingCentreDetails />
             </DashboardLayout>
           }
         />
