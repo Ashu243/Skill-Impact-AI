@@ -6,14 +6,16 @@ export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      
+    <div className="min-h-screen bg-slate-50">
+
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      {/* Main content */}
+      <div className="flex min-h-screen flex-col lg:ml-72">
+
         <Header
           onMenuClick={() => setSidebarOpen(true)}
         />
@@ -23,6 +25,7 @@ export default function DashboardLayout({ children }) {
             {children}
           </div>
         </main>
+
       </div>
     </div>
   );

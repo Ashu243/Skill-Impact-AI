@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/TrainingCentreDashboard.jsx";
 import DashboardLayout from "./components/Layout/DashboardLayout.jsx";
 import Candidates from "./pages/Candidates";
 import CandidateDetails from "./pages/CandidateDetails";
@@ -10,6 +10,10 @@ import TrainingCentreDetails from "./pages/TrainingCentreDetails";
 import Analytics from "./pages/Analytics";
 import RiskDetection from "./pages/RiskDetection";
 import Recommendations from "./pages/Recommendations";
+import Register from "./pages/Register";
+import MyTraining from "./pages/MyTraining";
+import Programs from "./pages/Programs";
+import PolicyInsights from "./pages/PolicyInsights";
 
 function Placeholder({ title }) {
   return (
@@ -32,6 +36,7 @@ export default function App() {
 
         {/* Login */}
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Application */}
         <Route
@@ -75,6 +80,33 @@ export default function App() {
           element={
             <DashboardLayout>
               <TrainingCentreDetails />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/my-training"
+          element={
+            <DashboardLayout>
+              <MyTraining />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/programs"
+          element={
+            <DashboardLayout>
+              <Programs />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/policy-insights"
+          element={
+            <DashboardLayout>
+              <PolicyInsights />
             </DashboardLayout>
           }
         />
