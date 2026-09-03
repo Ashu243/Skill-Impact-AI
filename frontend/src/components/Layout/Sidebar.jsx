@@ -229,9 +229,8 @@ export default function Sidebar({ isOpen, onClose }) {
                 </nav>
 
                 {/* User / Bottom */}
-                <div className="border-t border-slate-100 p-4">
+                {/* <div className="border-t border-slate-100 p-4">
 
-                    {/* Settings */}
                     <button className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-slate-50">
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-sm">
                             ⚙
@@ -247,7 +246,7 @@ export default function Sidebar({ isOpen, onClose }) {
                             </p>
                         </div>
                     </button>
-                </div>
+                </div> */}
             </aside>
         </>
     );

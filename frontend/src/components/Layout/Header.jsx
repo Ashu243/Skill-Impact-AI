@@ -200,11 +200,11 @@ export default function Header({ onMenuClick }) {
               </div>
 
               {/* Profile */}
-              <button
+              {/* <button
                 className="mt-2 w-full rounded-xl px-3 py-2.5 text-left text-sm text-slate-600 transition hover:bg-slate-50"
               >
                 Profile
-              </button>
+              </button> */}
 
               {/* Logout */}
               <button
