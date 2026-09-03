@@ -230,22 +230,6 @@ export default function Sidebar({ isOpen, onClose }) {
 
                 {/* User / Bottom */}
                 <div className="border-t border-slate-100 p-4">
-                    {/* Logged in user */}
-                    <div className="mb-3 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-sm font-semibold text-blue-700">
-                            {user?.name?.charAt(0)?.toUpperCase() || "U"}
-                        </div>
-
-                        <div className="min-w-0">
-                            <p className="truncate text-sm font-medium text-slate-700">
-                                {user?.name || "User"}
-                            </p>
-
-                            <p className="text-xs capitalize text-slate-400">
-                                {role.replace("_", " ")}
-                            </p>
-                        </div>
-                    </div>
 
                     {/* Settings */}
                     <button className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-slate-50">

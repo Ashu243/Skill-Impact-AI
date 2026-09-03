@@ -14,6 +14,11 @@ import Register from "./pages/Register";
 import MyTraining from "./pages/MyTraining";
 import Programs from "./pages/Programs";
 import PolicyInsights from "./pages/PolicyInsights";
+import MyEmployment from "./pages/MyEmployment";
+import CareerJourney from "./pages/CareerJourney";
+import AIInsights from "./pages/AIInsights";
+import EmploymentTrends from "./pages/EmploymentTrends";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function Placeholder({ title }) {
   return (
@@ -38,115 +43,197 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Application */}
+        {/* Dashboard - all logged-in roles */}
         <Route
           path="/dashboard"
           element={
-            <DashboardLayout>
-              <Dashboard />
-            </DashboardLayout>
+            <ProtectedRoute
+              allowedRoles={[
+                "candidate",
+                "training_centre",
+                "policymaker",
+              ]}
+            >
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
+        {/* Training Centre */}
         <Route
           path="/candidates"
           element={
-            <DashboardLayout>
-              <Candidates />
-            </DashboardLayout>
+            <ProtectedRoute allowedRoles={["training_centre"]}>
+              <DashboardLayout>
+                <Candidates />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/candidates/:id"
           element={
-            <DashboardLayout>
-              <CandidateDetails />
-            </DashboardLayout>
+            <ProtectedRoute allowedRoles={["training_centre"]}>
+              <DashboardLayout>
+                <CandidateDetails />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/training-centres"
           element={
-            <DashboardLayout>
-              <TrainingCentres />
-            </DashboardLayout>
+            <ProtectedRoute
+              allowedRoles={["training_centre", "policymaker"]}
+            >
+              <DashboardLayout>
+                <TrainingCentres />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/training-centres/:id"
           element={
-            <DashboardLayout>
-              <TrainingCentreDetails />
-            </DashboardLayout>
-          }
-        />
-
-        <Route
-          path="/my-training"
-          element={
-            <DashboardLayout>
-              <MyTraining />
-            </DashboardLayout>
-          }
-        />
-
-        <Route
-          path="/programs"
-          element={
-            <DashboardLayout>
-              <Programs />
-            </DashboardLayout>
-          }
-        />
-
-        <Route
-          path="/policy-insights"
-          element={
-            <DashboardLayout>
-              <PolicyInsights />
-            </DashboardLayout>
+            <ProtectedRoute
+              allowedRoles={["training_centre", "policymaker"]}
+            >
+              <DashboardLayout>
+                <TrainingCentreDetails />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/analytics"
           element={
-            <DashboardLayout>
-              <Analytics />
-            </DashboardLayout>
+            <ProtectedRoute
+              allowedRoles={["training_centre", "policymaker"]}
+            >
+              <DashboardLayout>
+                <Analytics />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/risk-detection"
           element={
-            <DashboardLayout>
-              <RiskDetection />
-            </DashboardLayout>
+            <ProtectedRoute
+              allowedRoles={["training_centre", "policymaker"]}
+            >
+              <DashboardLayout>
+                <RiskDetection />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/ai-insights"
           element={
-            <DashboardLayout>
-              <Placeholder title="AI Insights" />
-            </DashboardLayout>
+            <ProtectedRoute allowedRoles={["training_centre"]}>
+              <DashboardLayout>
+                <AIInsights />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Candidate */}
+        <Route
+          path="/my-training"
+          element={
+            <ProtectedRoute allowedRoles={["candidate"]}>
+              <DashboardLayout>
+                <MyTraining />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
         <Route
-          path="/recommendations"
+          path="/my-employment"
           element={
-            <DashboardLayout>
-              <Recommendations />
-            </DashboardLayout>
+            <ProtectedRoute allowedRoles={["candidate"]}>
+              <DashboardLayout>
+                <MyEmployment />
+              </DashboardLayout>
+            </ProtectedRoute>
           }
         />
 
+        <Route
+          path="/career-journey"
+          element={
+            <ProtectedRoute allowedRoles={["candidate"]}>
+              <DashboardLayout>
+                <CareerJourney />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Policymaker */}
+        <Route
+          path="/programs"
+          element={
+            <ProtectedRoute allowedRoles={["policymaker"]}>
+              <DashboardLayout>
+                <Programs />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employment-trends"
+          element={
+            <ProtectedRoute allowedRoles={["policymaker"]}>
+              <DashboardLayout>
+                <EmploymentTrends />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/policy-insights"
+          element={
+            <ProtectedRoute allowedRoles={["policymaker"]}>
+              <DashboardLayout>
+                <PolicyInsights />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Recommendations */}
+        <Route
+          path="/recommendations"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "candidate",
+                "training_centre",
+                "policymaker",
+              ]}
+            >
+              <DashboardLayout>
+                <Recommendations />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Unknown route */}
         <Route
           path="*"
           element={<Navigate to="/" replace />}

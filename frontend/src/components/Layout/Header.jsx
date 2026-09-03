@@ -1,9 +1,109 @@
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 export default function Header({ onMenuClick }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const user = JSON.parse(
+    localStorage.getItem("skillimpactUser")
+  );
+
+  const role = user?.role || "candidate";
+  const name = user?.name || "User";
+
+  const roleLabels = {
+    candidate: "Candidate",
+    training_centre: "Training Centre",
+    policymaker: "Policymaker",
+  };
+
+  const roleLabel = roleLabels[role] || "User";
+
+  // Get initials
+  const initials = name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  // Page titles
+  const pageTitles = {
+    "/dashboard": {
+      title: "Dashboard",
+      description: "Employment outcome overview",
+    },
+    "/my-training": {
+      title: "My Training",
+      description: "Track your training progress",
+    },
+    "/my-employment": {
+      title: "My Employment",
+      description: "Track your employment outcomes",
+    },
+    "/career-journey": {
+      title: "Career Journey",
+      description: "Track your career progress",
+    },
+    "/candidates": {
+      title: "Candidates",
+      description: "Monitor candidate outcomes",
+    },
+    "/training-centres": {
+      title: "Training Centres",
+      description: "Monitor training centre performance",
+    },
+    "/analytics": {
+      title: "Analytics",
+      description: "Analyze employment outcomes",
+    },
+    "/risk-detection": {
+      title: "Risk Detection",
+      description: "Identify candidates requiring attention",
+    },
+    "/ai-insights": {
+      title: "AI Insights",
+      description: "AI-powered training insights",
+    },
+    "/recommendations": {
+      title: "Recommendations",
+      description: "Recommended actions from outcome data",
+    },
+    "/programs": {
+      title: "Programs",
+      description: "Monitor skilling programs",
+    },
+    "/employment-trends": {
+      title: "Employment Trends",
+      description: "Monitor workforce outcomes",
+    },
+    "/policy-insights": {
+      title: "Policy Insights",
+      description: "AI-powered policy recommendations",
+    },
+  };
+
+  const currentPage =
+    pageTitles[location.pathname] || {
+      title: "SkillImpact AI",
+      description: "Employment Outcome Intelligence",
+    };
+
+  const handleLogout = () => {
+    localStorage.removeItem("skillimpactUser");
+    setProfileOpen(false);
+    navigate("/");
+  };
+
   return (
     <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 lg:px-8">
       
       {/* Left */}
       <div className="flex items-center gap-3">
+
         {/* Mobile menu */}
         <button
           onClick={onMenuClick}
@@ -24,18 +124,18 @@ export default function Header({ onMenuClick }) {
 
         <div>
           <h1 className="text-lg font-semibold text-slate-900">
-            Dashboard
+            {currentPage.title}
           </h1>
 
           <p className="hidden text-xs text-slate-400 sm:block">
-            Employment outcome overview
+            {currentPage.description}
           </p>
         </div>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-3">
-        
+
         {/* Notification */}
         <button className="relative rounded-xl p-2.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
           <svg
@@ -55,25 +155,67 @@ export default function Header({ onMenuClick }) {
         <div className="hidden h-8 w-px bg-slate-200 sm:block" />
 
         {/* Profile */}
-        <button className="flex items-center gap-3 rounded-xl p-1.5 pr-2 transition hover:bg-slate-50">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-sm font-semibold text-blue-700">
-            AD
-          </div>
+        <div className="relative">
 
-          <div className="hidden text-left sm:block">
-            <p className="text-sm font-medium text-slate-700">
-              Administrator
-            </p>
+          <button
+            onClick={() => setProfileOpen((prev) => !prev)}
+            className="flex items-center gap-3 rounded-xl p-1.5 pr-2 transition hover:bg-slate-50"
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-sm font-semibold text-blue-700">
+              {initials}
+            </div>
 
-            <p className="text-xs text-slate-400">
-              Platform Admin
-            </p>
-          </div>
+            <div className="hidden text-left sm:block">
+              <p className="text-sm font-medium text-slate-700">
+                {name}
+              </p>
 
-          <span className="hidden text-xs text-slate-400 sm:block">
-            ▾
-          </span>
-        </button>
+              <p className="text-xs text-slate-400">
+                {roleLabel}
+              </p>
+            </div>
+
+            <span
+              className={`hidden text-xs text-slate-400 transition sm:block ${
+                profileOpen ? "rotate-180" : ""
+              }`}
+            >
+              ▾
+            </span>
+          </button>
+
+          {/* Dropdown */}
+          {profileOpen && (
+            <div className="absolute right-0 top-14 z-50 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg">
+
+              {/* User info */}
+              <div className="border-b border-slate-100 px-3 py-3">
+                <p className="text-sm font-semibold text-slate-900">
+                  {name}
+                </p>
+
+                <p className="mt-1 text-xs text-slate-400">
+                  {roleLabel}
+                </p>
+              </div>
+
+              {/* Profile */}
+              <button
+                className="mt-2 w-full rounded-xl px-3 py-2.5 text-left text-sm text-slate-600 transition hover:bg-slate-50"
+              >
+                Profile
+              </button>
+
+              {/* Logout */}
+              <button
+                onClick={handleLogout}
+                className="mt-1 w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
