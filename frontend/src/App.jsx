@@ -7,6 +7,9 @@ import Candidates from "./pages/Candidates";
 import CandidateDetails from "./pages/CandidateDetails";
 import TrainingCentres from "./pages/TrainingCentres";
 import TrainingCentreDetails from "./pages/TrainingCentreDetails";
+import Analytics from "./pages/Analytics";
+import RiskDetection from "./pages/RiskDetection";
+import Recommendations from "./pages/Recommendations";
 
 function Placeholder({ title }) {
   return (
@@ -80,7 +83,7 @@ export default function App() {
           path="/analytics"
           element={
             <DashboardLayout>
-              <Placeholder title="Analytics" />
+              <Analytics />
             </DashboardLayout>
           }
         />
@@ -89,7 +92,7 @@ export default function App() {
           path="/risk-detection"
           element={
             <DashboardLayout>
-              <Placeholder title="Risk Detection" />
+              <RiskDetection />
             </DashboardLayout>
           }
         />
@@ -107,7 +110,7 @@ export default function App() {
           path="/recommendations"
           element={
             <DashboardLayout>
-              <Placeholder title="Recommendations" />
+              <Recommendations />
             </DashboardLayout>
           }
         />
