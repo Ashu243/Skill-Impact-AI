@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -9,64 +9,149 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-const handleSubmit = (e) => {
-    e.preventDefault();
 
+
+    const demoUsers = [
+        {
+            id: "demo-candidate",
+            name: "Demo Candidate",
+            email: "candidate@skillimpact.ai",
+            password: "demo123",
+            role: "candidate",
+        },
+        {
+            id: "demo-training-centre",
+            name: "Demo Training Centre",
+            email: "centre@skillimpact.ai",
+            password: "demo123",
+            role: "training_centre",
+        },
+        {
+            id: "demo-policymaker",
+            name: "Demo Policymaker",
+            email: "policymaker@skillimpact.ai",
+            password: "demo123",
+            role: "policymaker",
+        },
+    ];
+
+    const setupDemoAccounts = () => {
+        const existingUsers = JSON.parse(
+            localStorage.getItem("skillimpactDemoUsers") || "[]"
+        );
+
+        const updatedUsers = [...existingUsers];
+
+        demoUsers.forEach((demoUser) => {
+            const alreadyExists = updatedUsers.some(
+                (user) => user.email === demoUser.email
+            );
+
+            if (!alreadyExists) {
+                updatedUsers.push(demoUser);
+            }
+        });
+
+        localStorage.setItem(
+            "skillimpactDemoUsers",
+            JSON.stringify(updatedUsers)
+        );
+    };
+
+    const handleDemoLogin = (demoUser) => {
     setError("");
 
-    // Get all registered users
+    // Get existing users from localStorage
     const users = JSON.parse(
         localStorage.getItem("skillimpactDemoUsers") || "[]"
     );
 
-    // No users registered
-    if (users.length === 0) {
-        setError("No account found. Please create an account first.");
-        return;
-    }
-
-    // Find user by email
-    const user = users.find(
-        (user) =>
-            user.email.toLowerCase() === email.trim().toLowerCase()
+    // Check if demo user already exists
+    const existingUser = users.find(
+        (user) => user.email === demoUser.email
     );
 
-    // Email not found
-    if (!user) {
-        setError("Invalid email or password.");
-        return;
+    // If not, save demo user
+    if (!existingUser) {
+        users.push(demoUser);
+        localStorage.setItem(
+            "skillimpactDemoUsers",
+            JSON.stringify(users)
+        );
     }
 
-    // Check password
-    if (user.password !== password) {
-        setError("Invalid email or password.");
-        return;
-    }
-
-    // Login successful
+    // Save currently logged-in user
     localStorage.setItem(
         "skillimpactUser",
-        JSON.stringify(user)
+        JSON.stringify(demoUser)
     );
 
-    // Redirect based on role
-    switch (user.role) {
-        case "candidate":
-            navigate("/dashboard");
-            break;
-
-        case "training_centre":
-            navigate("/dashboard");
-            break;
-
-        case "policymaker":
-            navigate("/dashboard");
-            break;
-
-        default:
-            setError("Invalid user role.");
-    }
+    // Go directly to dashboard
+    navigate("/dashboard");
 };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        setError("");
+
+        // Get all registered users
+        const users = JSON.parse(
+            localStorage.getItem("skillimpactDemoUsers") || "[]"
+        );
+
+        // No users registered
+        if (users.length === 0) {
+            setError("No account found. Please create an account first.");
+            return;
+        }
+
+        // Find user by email
+        const user = users.find(
+            (user) =>
+                user.email.toLowerCase() === email.trim().toLowerCase()
+        );
+
+        // Email not found
+        if (!user) {
+            setError("Invalid email or password.");
+            return;
+        }
+
+        // Check password
+        if (user.password !== password) {
+            setError("Invalid email or password.");
+            return;
+        }
+
+        // Login successful
+        localStorage.setItem(
+            "skillimpactUser",
+            JSON.stringify(user)
+        );
+
+        // Redirect based on role
+        switch (user.role) {
+            case "candidate":
+                navigate("/dashboard");
+                break;
+
+            case "training_centre":
+                navigate("/dashboard");
+                break;
+
+            case "policymaker":
+                navigate("/dashboard");
+                break;
+
+            default:
+                setError("Invalid user role.");
+        }
+    };
+
+    useEffect(() => {
+        setupDemoAccounts();
+    }, []);
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -280,21 +365,48 @@ const handleSubmit = (e) => {
                                     </div>
                                 </div>
 
-                                {/* Remember */}
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        id="remember"
-                                        type="checkbox"
-                                        className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                    />
+                                {/* Demo accounts */}
+                                <div className="mt-6 border-t border-slate-100 pt-6">
+                                    <div className="mb-3">
+                                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                            Prototype Demo
+                                        </p>
 
-                                    <label
-                                        htmlFor="remember"
-                                        className="text-sm text-slate-600"
-                                    >
-                                        Keep me signed in
-                                    </label>
+                                        <p className="mt-1 text-sm text-slate-500">
+                                            Use one of the demo accounts below.
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        {demoUsers.map((demoUser) => (
+                                            <button
+                                                key={demoUser.email}
+                                                type="button"
+                                                onClick={() => handleDemoLogin(demoUser)}
+                                                className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-50"
+                                            >
+                                                <div>
+                                                    <p className="text-sm font-medium text-slate-800">
+                                                        {demoUser.name}
+                                                    </p>
+
+                                                    <p className="mt-0.5 text-xs text-slate-500">
+                                                        {demoUser.email}
+                                                    </p>
+                                                </div>
+
+                                                <span className="rounded-lg bg-blue-100 px-2 py-1 text-xs font-medium text-blue-600">
+                                                    {demoUser.role === "training_centre"
+                                                        ? "Training Centre"
+                                                        : demoUser.role === "policymaker"
+                                                            ? "Policymaker"
+                                                            : "Candidate"}
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
+
 
                                 {/* Error */}
                                 {error && (
@@ -313,19 +425,6 @@ const handleSubmit = (e) => {
 
                             </form>
 
-                            {/* Demo account */}
-                            <div className="mt-6 border-t border-slate-100 pt-6">
-                                <div className="rounded-xl bg-slate-50 p-4">
-                                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                                        Prototype Demo
-                                    </p>
-
-                                    <p className="mt-1 text-sm text-slate-600">
-                                        Create an account first, then use
-                                        the same email and password to sign in.
-                                    </p>
-                                </div>
-                            </div>
 
                             {/* Register */}
                             <div className="mt-6 text-center">
@@ -361,21 +460,19 @@ function JourneyItem({ icon, title, active = false }) {
     return (
         <div className="flex flex-col items-center gap-2">
             <div
-                className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-semibold ${
-                    active
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                        : "bg-white/10 text-slate-300"
-                }`}
+                className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-semibold ${active
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                    : "bg-white/10 text-slate-300"
+                    }`}
             >
                 {icon}
             </div>
 
             <span
-                className={`text-xs ${
-                    active
-                        ? "font-medium text-white"
-                        : "text-slate-500"
-                }`}
+                className={`text-xs ${active
+                    ? "font-medium text-white"
+                    : "text-slate-500"
+                    }`}
             >
                 {title}
             </span>
