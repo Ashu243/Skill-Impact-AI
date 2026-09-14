@@ -22,7 +22,7 @@ export default function TrainingCentreDashboard() {
         </p>
 
         <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Good morning, Administrator 👋
+          Hey There 👋
         </h2>
 
         <p className="mt-2 text-sm text-slate-500">

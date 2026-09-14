@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Dashboard from "./pages/TrainingCentreDashboard.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import DashboardLayout from "./components/Layout/DashboardLayout.jsx";
 import Candidates from "./pages/Candidates";
 import CandidateDetails from "./pages/CandidateDetails";
@@ -19,6 +19,7 @@ import CareerJourney from "./pages/CareerJourney";
 import AIInsights from "./pages/AIInsights";
 import EmploymentTrends from "./pages/EmploymentTrends";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LandingPage from "./pages/LandingPage.jsx";
 
 function Placeholder({ title }) {
   return (
@@ -40,7 +41,8 @@ export default function App() {
       <Routes>
 
         {/* Login */}
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
 
         {/* Dashboard - all logged-in roles */}
